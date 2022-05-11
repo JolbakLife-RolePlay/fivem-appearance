@@ -33,34 +33,34 @@ local function loadOutfitNames(identifier)
 end
 exports('outfitNames', loadOutfitNames)
 
-if GetResourceState('es_extended'):find('start') then
-	local ESX = exports.es_extended:getSharedObject()
+if GetResourceState('JLRP-Framework'):find('start') then
+	local Core = exports['JLRP-Framework']:GetFrameworkObjects()
 
-	ESX = {
-		GetExtendedPlayers = ESX.GetExtendedPlayers,
-		RegisterServerCallback = ESX.RegisterServerCallback,
-		GetPlayerFromId = ESX.GetPlayerFromId,
+	Core = {
+		GetExtendedPlayers = Core.GetExtendedPlayers,
+		RegisterServerCallback = Core.RegisterServerCallback,
+		GetPlayerFromId = Core.GetPlayerFromId,
 	}
 
-	AddEventHandler('esx:playerLoaded', function(playerId, xPlayer)
+	AddEventHandler('Framework:playerLoaded', function(playerId, xPlayer)
 		identifiers[playerId] = xPlayer.identifier		
 		TriggerClientEvent('fivem-appearance:outfitNames', playerId, loadOutfitNames(xPlayer.identifier))
 	end)
 
 	RegisterNetEvent('esx_skin:save', function(appearance)
-		local xPlayer = ESX.GetPlayerFromId(source)
+		local xPlayer = Core.GetPlayerFromId(source)
 		MySQL.update('UPDATE users SET skin = ? WHERE identifier = ?', { json.encode(appearance), xPlayer.identifier })
 	end)
 
-	ESX.RegisterServerCallback('esx_skin:getPlayerSkin', function(source, cb)
-		local xPlayer = ESX.GetPlayerFromId(source)
+	Core.RegisterServerCallback('esx_skin:getPlayerSkin', function(source, cb)
+		local xPlayer = Core.GetPlayerFromId(source)
 		local appearance = MySQL.scalar.await('SELECT skin FROM users WHERE identifier = ?', { xPlayer.identifier })
 
-		cb(appearance and json.decode(appearance) or {})
+		cb(appearance ~= nil and json.decode(appearance) or nil)
 	end)
 
 	do
-		local xPlayers = ESX.GetExtendedPlayers()
+		local xPlayers = Core.GetExtendedPlayers()
 
 		for i = 1, #xPlayers do
 			local xPlayer = xPlayers[i]

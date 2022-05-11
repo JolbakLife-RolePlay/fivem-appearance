@@ -18,7 +18,7 @@ local function getOutfit(slot)
 end
 
 if ESX then
-	RegisterNetEvent('esx:playerLoaded', function()
+	RegisterNetEvent('JLRP-Framework:playerLoaded', function()
 		outfitNames = nil
 		outfits = {}
 	end)

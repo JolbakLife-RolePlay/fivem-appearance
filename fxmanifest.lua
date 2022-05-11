@@ -9,10 +9,18 @@ game         'gta5'
 -- repository 'https://github.com/pedr0fontoura/fivem-appearance'
 -- version '1.2.2'
 
-author 'Linden'
-description 'A flexible player customization script for FiveM.'
-repository 'https://github.com/overextended/fivem-appearance/'
-version '1.2.0'
+--[[ Converted to Lua]]
+-- author 'Linden'
+-- description 'A flexible player customization script for FiveM.'
+-- repository 'https://github.com/overextended/fivem-appearance/'
+-- version '1.1.1'
+
+name 'fivem-appearance'
+author 'Mahan Moulaei'
+discord 'Mahan#8183'
+description 'JolbakLifeRP fivem-appearance'
+
+version '0.0'
 
 client_scripts {
 	'client/constants.lua',
