@@ -41,7 +41,7 @@ if GetResourceState('JLRP-Framework'):find('start') then
 		RegisterServerCallback = Core.RegisterServerCallback,
 		GetPlayerFromId = Core.GetPlayerFromId,
 	}
-
+	
 	AddEventHandler('Framework:playerLoaded', function(playerId, xPlayer)
 		identifiers[playerId] = xPlayer.identifier		
 		TriggerClientEvent('fivem-appearance:outfitNames', playerId, loadOutfitNames(xPlayer.identifier))
@@ -55,8 +55,12 @@ if GetResourceState('JLRP-Framework'):find('start') then
 	Core.RegisterServerCallback('esx_skin:getPlayerSkin', function(source, cb)
 		local xPlayer = Core.GetPlayerFromId(source)
 		local appearance = MySQL.scalar.await('SELECT skin FROM users WHERE identifier = ?', { xPlayer.identifier })
+		local jobSkin = {
+			skin_male   = xPlayer.job.skin_male,
+			skin_female = xPlayer.job.skin_female
+		}
 
-		cb(appearance ~= nil and json.decode(appearance) or nil)
+		cb(appearance ~= nil and json.decode(appearance) or nil, jobSkin)
 	end)
 
 	do
